@@ -19,3 +19,17 @@ export function createS3Generators() {
 
   return { r, s }
 }
+
+export function createBlockGenerators() {
+  const a = new Move(
+    'a',
+    new Permutation([1, 0, 2, 3])
+  )
+
+  const b = new Move(
+    'b',
+    new Permutation([0, 1, 3, 2])
+  )
+
+  return { a, b }
+}
