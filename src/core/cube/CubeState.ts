@@ -1,40 +1,30 @@
-import { Move } from '../group/Move'
+import { CornerState } from './CornerState'
+import { EdgeState } from './EdgeState'
 
 export class CubeState {
-  private readonly positions: number[]
+  readonly corners: CornerState
+  readonly edges: EdgeState
 
-  constructor(positions: number[]) {
-    this.positions = [...positions]
+  constructor(corners: CornerState, edges: EdgeState) {
+    this.corners = corners
+    this.edges = edges
   }
 
-  static solved(n: number): CubeState {
-    return new CubeState([...Array(n).keys()])
-  }
-
-  apply(move: Move): CubeState {
-    const newPositions = new Array(this.positions.length)
-
-    for (let i = 0; i < this.positions.length; i++) {
-      const newIndex = move.permutation.apply(i)
-      newPositions[newIndex] = this.positions[i]
-    }
-
-    return new CubeState(newPositions)
+  static solved(): CubeState {
+    return new CubeState(
+      CornerState.solved(),
+      EdgeState.solved()
+    )
   }
 
   equals(other: CubeState): boolean {
-    if (this.positions.length !== other.positions.length) return false
-
-    for (let i = 0; i < this.positions.length; i++) {
-      if (this.positions[i] !== other.positions[i]) {
-        return false
-      }
-    }
-
-    return true
+    return (
+      this.corners.equals(other.corners) &&
+      this.edges.equals(other.edges)
+    )
   }
 
-  toString(): string {
-    return `[${this.positions.join(', ')}]`
+  isSolved(): boolean {
+    return this.equals(CubeState.solved())
   }
 }

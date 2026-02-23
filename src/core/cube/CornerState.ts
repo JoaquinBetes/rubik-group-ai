@@ -25,6 +25,19 @@ export class CornerState {
     return true
   }
 
+  isSolved(): boolean {
+    return this.equals(CornerState.solved())
+  }
+
+  totalOrientation(): number {
+    return this.orientation.reduce((acc, o) => acc + o, 0)
+  }
+
+  isOrientationValid(): boolean {
+    return this.totalOrientation() % 3 === 0
+  }
+
+
   toString(): string {
     return `P:${this.permutation.join(',')} | O:${this.orientation.join(',')}`
   }
