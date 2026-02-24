@@ -1,28 +1,33 @@
+import { Permutation } from '../group/Permutation'
+
 export class CornerState {
-  readonly permutation: number[]
+  readonly permutation: Permutation
   readonly orientation: number[]
 
   constructor(
-    permutation: number[],
+    permutation: Permutation,
     orientation: number[]
   ) {
-    this.permutation = [...permutation]
+    if (orientation.length !== 8) {
+      throw new Error('Corner orientation must have length 8')
+    }
+
+    this.permutation = permutation
     this.orientation = [...orientation]
   }
 
   static solved(): CornerState {
     return new CornerState(
-      [0,1,2,3,4,5,6,7],
-      [0,0,0,0,0,0,0,0]
+      Permutation.identity(8),
+      new Array(8).fill(0)
     )
   }
 
   equals(other: CornerState): boolean {
-    for (let i = 0; i < 8; i++) {
-      if (this.permutation[i] !== other.permutation[i]) return false
-      if (this.orientation[i] !== other.orientation[i]) return false
-    }
-    return true
+    return (
+      this.permutation.equals(other.permutation) &&
+      this.orientation.every((v, i) => v === other.orientation[i])
+    )
   }
 
   isSolved(): boolean {
@@ -37,8 +42,7 @@ export class CornerState {
     return this.totalOrientation() % 3 === 0
   }
 
-
   toString(): string {
-    return `P:${this.permutation.join(',')} | O:${this.orientation.join(',')}`
+    return `P:${this.permutation.toString()} | O:${this.orientation.join(',')}`
   }
 }

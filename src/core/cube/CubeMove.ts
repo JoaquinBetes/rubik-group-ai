@@ -37,7 +37,7 @@ export class CubeMove {
     for (let i = 0; i < 8; i++) {
       const source = this.cornerPermutation.apply(i)
 
-      newCornerPerm[i] = state.corners.permutation[source]
+      newCornerPerm[i] = state.corners.permutation.apply(source)
 
       newCornerOrient[i] =
         (state.corners.orientation[source] +
@@ -48,7 +48,7 @@ export class CubeMove {
     for (let i = 0; i < 12; i++) {
       const source = this.edgePermutation.apply(i)
 
-      newEdgePerm[i] = state.edges.permutation[source]
+      newEdgePerm[i] = newEdgePerm[i] = state.edges.permutation.apply(source)
 
       newEdgeOrient[i] =
         (state.edges.orientation[source] +
@@ -56,8 +56,14 @@ export class CubeMove {
     }
 
     return new CubeState(
-      new CornerState(newCornerPerm, newCornerOrient),
-      new EdgeState(newEdgePerm, newEdgeOrient)
+      new CornerState(
+        Permutation.fromMapping(newCornerPerm),
+        newCornerOrient
+      ),
+      new EdgeState(
+        Permutation.fromMapping(newEdgePerm),
+        newEdgeOrient
+      )
     )
   }
 

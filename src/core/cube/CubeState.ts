@@ -27,4 +27,13 @@ export class CubeState {
   isSolved(): boolean {
     return this.equals(CubeState.solved())
   }
+
+  isParityValid(): boolean {
+    const cornerEven = this.corners.permutation.isEven()
+    const edgeEven = this.edges.permutation.isEven()
+
+    return cornerEven === edgeEven
+  }
+
+
 }

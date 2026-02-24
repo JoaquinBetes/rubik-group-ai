@@ -1,6 +1,6 @@
 import { CubeState } from './core/cube/CubeState'
 import { solve } from './core/cube/solver'
-import { R, U, F, moves } from './core/cube/moveDefinitions'
+import { R, U, F, B, D, L, moves } from './core/cube/moveDefinitions'
 
 function test(name: string, condition: boolean) {
   console.log(`${name}:`, condition ? '✅' : '❌')
@@ -85,3 +85,17 @@ console.log(
   "Edge orientation valid:",
   randomScramble.edges.equals(randomScramble.edges) ? "✅" : "❌"
 )
+
+
+
+let state = CubeState.solved()
+state = D.apply(D.apply(D.apply(D.apply(state))))
+console.log("D^4 identity:", state.isSolved())
+
+state = L.apply(L.apply(L.apply(L.apply(CubeState.solved()))))
+console.log("L^4 identity:", state.isSolved())
+
+state = B.apply(B.apply(B.apply(B.apply(CubeState.solved()))))
+console.log("B^4 identity:", state.isSolved())
+
+console.log("Solved parity:", CubeState.solved().isParityValid())

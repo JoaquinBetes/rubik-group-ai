@@ -132,6 +132,32 @@ export class Permutation {
         return cycleLengths.reduce((acc, len) => lcm(acc, len), 1)
     }
 
+    isEven(): boolean {
+      const n = this.mapping.length
+      const visited: boolean[] = new Array(n).fill(false)
+      let parity = 0
+
+      for (let i = 0; i < n; i++) {
+        if (!visited[i]) {
+          let length = 0
+          let current = i
+
+          while (!visited[current]) {
+            visited[current] = true
+            current = this.apply(current)
+            length++
+          }
+
+          if (length > 0) {
+            parity += (length - 1)
+          }
+        }
+      }
+
+      return parity % 2 === 0
+    }
+
+
     // UTILITIES
 
     toString(): string {
